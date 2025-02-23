@@ -26,7 +26,7 @@
     /* Header */
     header {
       position: fixed; top: 0; left: 0; width: 100%;
-      background-color: #ffffff;
+      background-color: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       z-index: 1000;
     }
@@ -34,12 +34,8 @@
       max-width: 1200px; margin: 0 auto; padding: 14px 20px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .nav-logo {
-      font-size: 1.3rem; font-weight: 700; color: var(--accent-color);
-    }
-    nav ul {
-      list-style: none; display: flex; gap: 30px;
-    }
+    .nav-logo { font-size: 1.3rem; font-weight: 700; color: var(--accent-color); }
+    nav ul { list-style: none; display: flex; gap: 30px; }
     nav li a { font-weight: 500; color: #1f1f1f; }
     .header-spacer { height: 60px; }
     /* Кнопки */
@@ -155,17 +151,18 @@
       font-size: 1.4rem; font-weight: bold; color: var(--accent-color);
       margin-bottom: 20px;
     }
-    /* Обо мне: фото слева, текст справа с умеренным промежутком */
+    /* Обо мне: фото слева, текст справа – текст смещён вправо */
     .about-container {
       display: flex; align-items: center; justify-content: flex-start;
       gap: 40px;
     }
     .about-container img {
-      max-width: 280px;
-      border-radius: 50%;
-      object-fit: cover;
+      max-width: 280px; border-radius: 50%; object-fit: cover;
     }
-    .about-text { max-width: 600px; }
+    .about-text {
+      max-width: 600px;
+      margin-left: 80px; /* смещаем текст вправо */
+    }
     /* FAQ */
     .faq-item {
       border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px;
@@ -178,9 +175,7 @@
       content: "+"; position: absolute; right: 0; top: 0;
       font-weight: bold; color: var(--accent-color);
     }
-    .faq-answer {
-      display: none; margin-top: 10px; color: #444;
-    }
+    .faq-answer { display: none; margin-top: 10px; color: #444; }
     .faq-item.active h4::after { content: "-"; }
     .faq-item.active .faq-answer { display: block; }
     /* CTA Section */
@@ -206,9 +201,8 @@
       .hero p { font-size: 1rem; }
       nav ul { gap: 10px; }
       section { margin: 20px auto; padding: 40px 20px; }
-      .about-container {
-        flex-direction: column; align-items: center; gap: 20px;
-      }
+      .about-container { flex-direction: column; align-items: center; gap: 20px; }
+      .about-text { margin-left: 0; }
     }
   </style>
 </head>
@@ -233,7 +227,7 @@
     <div class="hero-content">
       <h1>3-месячный интенсив «Финишная прямая» по профильной математике</h1>
       <p>Заполните пробелы в знаниях и уверенно сдайте ЕГЭ!</p>
-      <button class="btn">Начните подготовку</button>
+      <button class="btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Начните подготовку</button>
     </div>
   </section>
   
@@ -270,7 +264,7 @@
       <em>Дата и время вебинара:</em><br><strong>1 марта в 19:00</strong>
     </p>
     <div style="text-align:center; margin-top:30px;">
-      <button class="btn" onclick="window.open('https://t.me/ВАШ_TELEGRAM_USERNAME','_blank')">Получить доступ</button>
+      <button class="btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Получить доступ</button>
     </div>
   </section>
   
@@ -396,7 +390,7 @@
     </div>
   </section>
   
-  <section class="fade-in cta" id="cta" style="margin-top: 40px;">
+<section class="fade-in cta" id="cta" style="margin-top: 40px;">
     <h2>Готовы присоединиться?</h2>
     <p style="margin-bottom: 20px;">Сделайте решающий шаг и запишитесь на «Финишную прямую» прямо сейчас! Вместе мы добьёмся любых результатов.</p>
     <div style="margin: 20px 0;">
@@ -454,3 +448,4 @@
   </script>
 </body>
 </html>
+
