@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Интенсив «Финишная прямая» по профильной математике</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Подключаем шрифт Inter через Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Сброс базовых отступов */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8f8f8;
+      color: #1f1f1f;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
+    a:hover { color: var(--accent-color); }
+    h1, h2, h3, h4 { margin-bottom: 0.5em; font-weight: 600; }
+    :root {
+      --accent-color: #2E8B57; /* Тёмный изумрудно-зелёный */
+      --heading-color: #333;
+    }
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      z-index: 1000;
+    }
+    .nav-container {
+      max-width: 1200px; margin: 0 auto; padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-size: 1.3rem; font-weight: 700; color: var(--accent-color);
+    }
+    nav ul {
+      list-style: none; display: flex; gap: 30px;
+    }
+    nav li a { font-weight: 500; color: #1f1f1f; }
+    .header-spacer { height: 60px; }
+    /* Кнопки */
+    .btn {
+      display: inline-block; padding: 14px 24px; border-radius: 6px;
+      color: #fff; background-color: var(--accent-color);
+      font-weight: 600; border: none; cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .btn:hover { background-color: #225040; }
+    /* Hero-секция */
+    .hero {
+      position: relative; min-height: 80vh;
+      background: linear-gradient(135deg, #2E8B57, #276749);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; color: #fff;
+    }
+    .hero-content { max-width: 800px; padding: 20px; }
+    .hero h1 {
+      font-size: 2.8rem; margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+    .hero p {
+      font-size: 1.3rem; margin-bottom: 2rem;
+      color: #e0f7ff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+    /* Общие стили секций */
+    section {
+      max-width: 1200px; margin: 40px auto;
+      background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border-radius: 8px; padding: 50px 30px;
+    }
+    section h2 {
+      text-align: center; margin-bottom: 40px;
+      font-size: 2rem; color: var(--heading-color);
+    }
+    /* Fade-in анимация */
+    .fade-in {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    /* Таймер */
+    .countdown {
+      display: flex; justify-content: center; gap: 10px;
+      margin-bottom: 20px; font-size: 1.2rem;
+    }
+    .cd-box {
+      background-color: #f9f9f9; padding: 10px 15px;
+      border-radius: 6px; text-align: center; min-width: 60px;
+    }
+    .cd-box span {
+      display: block; font-weight: 700; color: var(--accent-color);
+      font-size: 1.4rem;
+    }
+    .cd-label { font-size: 0.8rem; color: #666; }
+    /* Features */
+    .features {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; text-align: center;
+    }
+    @media (max-width: 992px) { .features { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .features { grid-template-columns: 1fr; } }
+    .feature-card {
+      background-color: #f9f9f9; padding: 20px;
+      border-radius: 8px; transition: transform 0.3s ease;
+    }
+    .feature-card:hover { transform: translateY(-3px); }
+    .feature-card h3 {
+      font-size: 1.2rem; margin-bottom: 0.5em;
+      color: var(--accent-color); font-weight: 600;
+    }
+    .feature-card p { text-align: center; }
+    /* Steps */
+    .steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px; text-align: center;
+    }
+    .step-card {
+      background-color: #f9f9f9; border-radius: 8px; padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    .step-card:hover { transform: translateY(-3px); }
+    .step-card h3 {
+      margin-bottom: 0.5em; color: var(--accent-color); font-weight: 600;
+    }
+    .step-card p { text-align: center; }
+    /* Who it suits */
+    .who-list {
+      list-style: none; padding-left: 0; max-width: 700px; margin: 20px auto;
+    }
+    .who-list li {
+      margin-bottom: 15px; padding-left: 30px; position: relative;
+    }
+    .who-list li::before {
+      content: "•"; position: absolute; left: 0; top: 0;
+      color: var(--accent-color); font-size: 1.4rem; line-height: 1;
+    }
+    /* Pricing */
+    .pricing-wrapper {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .price-card {
+      background-color: #f9f9f9; border-radius: 8px; padding: 20px;
+      text-align: center; transition: transform 0.3s ease;
+    }
+    .price-card:hover { transform: translateY(-3px); }
+    .price-card h3 {
+      margin-bottom: 0.5em; color: #333; font-size: 1.2rem; font-weight: 600;
+    }
+    .price {
+      font-size: 1.4rem; font-weight: bold; color: var(--accent-color);
+      margin-bottom: 20px;
+    }
+    /* Обо мне: фото слева, текст справа с умеренным промежутком */
+    .about-container {
+      display: flex; align-items: center; justify-content: flex-start;
+      gap: 40px;
+    }
+    .about-container img {
+      max-width: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .about-text { max-width: 600px; }
+    /* FAQ */
+    .faq-item {
+      border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px;
+    }
+    .faq-item h4 {
+      cursor: pointer; position: relative; padding-right: 20px;
+      font-size: 1.1rem;
+    }
+    .faq-item h4::after {
+      content: "+"; position: absolute; right: 0; top: 0;
+      font-weight: bold; color: var(--accent-color);
+    }
+    .faq-answer {
+      display: none; margin-top: 10px; color: #444;
+    }
+    .faq-item.active h4::after { content: "-"; }
+    .faq-item.active .faq-answer { display: block; }
+    /* CTA Section */
+    .cta {
+      text-align: center; background-color: #f9f9f9;
+      border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      padding: 40px 20px;
+    }
+    .cta h2 {
+      margin-bottom: 20px; font-size: 1.8rem; color: var(--heading-color);
+    }
+    .cta .cta-btn {
+      margin-top: 20px; padding: 16px 32px; font-size: 1.2rem;
+    }
+    /* Footer */
+    footer {
+      text-align: center; font-size: 0.9rem; color: #999;
+      margin-top: 20px; padding-bottom: 30px;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.8rem; }
+      .hero p { font-size: 1rem; }
+      nav ul { gap: 10px; }
+      section { margin: 20px auto; padding: 40px 20px; }
+      .about-container {
+        flex-direction: column; align-items: center; gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="nav-logo"><a href="#hero">Финишная прямая</a></div>
+      <nav>
+        <ul>
+          <li><a href="#why">Интенсив</a></li>
+          <li><a href="#steps">Как проходит</a></li>
+          <li><a href="#pricing">Цены</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#cta">Записаться</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="header-spacer"></div>
+  
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>3-месячный интенсив «Финишная прямая» по профильной математике</h1>
+      <p>Заполните пробелы в знаниях и уверенно сдайте ЕГЭ!</p>
+      <button class="btn">Начните подготовку</button>
+    </div>
+  </section>
+  
+  <section class="fade-in" id="timer-section">
+    <h2>Скидки действуют до старта курса</h2>
+    <div class="countdown" id="countdown">
+      <div class="cd-box">
+        <span id="cd-days">0</span>
+        <div class="cd-label">дней</div>
+      </div>
+      <div class="cd-box">
+        <span id="cd-hours">0</span>
+        <div class="cd-label">часов</div>
+      </div>
+      <div class="cd-box">
+        <span id="cd-mins">0</span>
+        <div class="cd-label">минут</div>
+      </div>
+      <div class="cd-box">
+        <span id="cd-secs">0</span>
+        <div class="cd-label">секунд</div>
+      </div>
+    </div>
+    <p style="text-align:center">Успейте оформить оплату до 26 февраля 23:59!</p>
+  </section>
+  
+  <section class="fade-in" id="free-webinar">
+    <h2>Бесплатный открытый вебинар</h2>
+    <p style="max-width: 800px; margin: 0 auto 20px auto; text-align:center;">
+      Перед стартом курса я проведу бесплатный открытый вебинар, где расскажу о самых частых ошибках на экзамене и покажу, как эффективно выстроить подготовку за оставшиеся три месяца.
+    </p>
+    <p style="text-align:center;">
+      Узнайте, с чего начать, какие темы наиболее сложные и как рационально распределить время.<br>
+      <em>Дата и время вебинара:</em><br><strong>1 марта в 19:00</strong>
+    </p>
+    <div style="text-align:center; margin-top:30px;">
+      <button class="btn" onclick="window.open('https://t.me/ВАШ_TELEGRAM_USERNAME','_blank')">Получить доступ</button>
+    </div>
+  </section>
+  
+  <section class="fade-in" id="why">
+    <h2>Почему именно этот интенсив?</h2>
+    <div class="features">
+      <div class="feature-card">
+        <h3>Сложные задания с нуля</h3>
+        <p>Пошагово разберём все типы задач, от простых до самых каверзных.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Разные треки</h3>
+        <p>Выберите подходящий темп занятий и нагрузку в зависимости от вашего уровня.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Максимум практики</h3>
+        <p>Каждое задание проверяется, и вы получаете подробные комментарии для улучшения.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Поддержка и чат</h3>
+        <p>Ответы на вопросы в любое время – помощь всегда под рукой.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Записи вебинаров</h3>
+        <p>Пропустили занятие? Смотрите запись в удобное время.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Шпаргалки и таблицы</h3>
+        <p>Готовые материалы для быстрого повторения и систематизации знаний.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="fade-in" id="steps">
+    <h2>Как всё будет проходить?</h2>
+    <div class="steps">
+      <div class="step-card">
+        <h3>Два занятия в неделю</h3>
+        <p>Каждое занятие по 90 минут в комфортном темпе.</p>
+      </div>
+      <div class="step-card">
+        <h3>Домашние задания</h3>
+        <p>После каждого занятия – практика с проверкой и обратной связью.</p>
+      </div>
+      <div class="step-card">
+        <h3>Старт 2 марта</h3>
+        <p>Оптимальное время для подготовки перед весенними пробниками.</p>
+      </div>
+      <div class="step-card">
+        <h3>Бонус-вебинары</h3>
+        <p>Дополнительные занятия по заданиям №18 и №19 для углублённой подготовки.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:40px; text-align:center;">Кому подойдёт этот курс</h3>
+    <ul class="who-list" style="max-width:700px; margin:20px auto;">
+      <li>Тем, кто мечтает о высоком балле и готов работать над собой.</li>
+      <li>Тем, у кого есть пробелы в знаниях, но стремятся их устранить.</li>
+      <li>Тем, кто уже посещает курсы, но хочет добиться ещё больших результатов.</li>
+      <li>Тем, кому нужен чёткий план действий и системный подход к математике.</li>
+    </ul>
+  </section>
+  
+  <section class="fade-in" id="pricing">
+    <h2>Цена и суперпредложение</h2>
+    <div class="pricing-wrapper">
+      <div class="price-card">
+        <h3>До 26 февраля</h3>
+        <p class="price">20 000 руб.</p>
+        <p>Специальная скидка для первых участников. Оплата в 3 платежа или сразу со скидкой 10%.</p>
+      </div>
+      <div class="price-card">
+        <h3>До 2 марта</h3>
+        <p class="price">23 000 руб.</p>
+        <p>Успейте до 2 марта – получите доступ к закрытому вебинару о лайфхаках и ошибках на ЕГЭ.</p>
+      </div>
+      <div class="price-card">
+        <h3>После 2 марта</h3>
+        <p class="price">26 000 руб.</p>
+        <p>Базовая стоимость. Оплата в три платежа. Приведите друга и получите скидку 1 000 руб.</p>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+      <button class="btn cta-btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Записаться на курс</button>
+    </div>
+  </section>
+  
+  <section class="fade-in" id="about">
+    <h2>Немного обо мне</h2>
+    <div class="about-container">
+      <img src="https://i.postimg.cc/D0qcJCsp/photo-2024-07-23-19-54-19.jpg" alt="Глеб Константинович Комаров">
+      <div class="about-text">
+        <p>Меня зовут <strong>Глеб Константинович Комаров</strong>. Уже 9 лет я помогаю школьникам подготовиться к ЕГЭ по математике. Каждый год я сдаю экзамен на высокий балл, внимательно отслеживая актуальные изменения.</p>
+        <p>Моя миссия — показать, что математика может быть понятной и увлекательной, а итоговый результат — закономерный итог усердной работы и грамотной подготовки.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="fade-in" id="faq">
+    <h2>Частые вопросы</h2>
+    <div class="faq-item">
+      <h4>Если я пропущу один из вебинаров курса, что делать?</h4>
+      <div class="faq-answer">
+        <p>Все занятия курса записываются, поэтому вы всегда сможете пересмотреть любой вебинар в удобное время.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <h4>Смогу ли я заниматься, если у меня совсем слабая база?</h4>
+      <div class="faq-answer">
+        <p>Да, курс построен так, чтобы даже при начальном низком уровне знаний вы могли начать с основ и постепенно двигаться вперёд.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <h4>Возможно ли оформить оплату частями?</h4>
+      <div class="faq-answer">
+        <p>Да, вы можете оформить оплату в рассрочку, разделив сумму курса на равные платежи, что делает подготовку более доступной.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <h4>Что делать, если не хватает времени на подготовку?</h4>
+      <div class="faq-answer">
+        <p>Я помогу выстроить гибкий график занятий и выделить приоритетные темы, чтобы даже при плотном расписании вы смогли подготовиться эффективно.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="fade-in cta" id="cta" style="margin-top: 40px;">
+    <h2>Готовы присоединиться?</h2>
+    <p style="margin-bottom: 20px;">Сделайте решающий шаг и запишитесь на «Финишную прямую» прямо сейчас! Вместе мы добьёмся любых результатов.</p>
+    <div style="margin: 20px 0;">
+      <button class="btn" onclick="window.open('https://t.me/Glebie','_blank')">Telegram</button>
+      <button class="btn" onclick="window.open('https://wa.me/79800037221','_blank')">WhatsApp</button>
+    </div>
+    <p>Или свяжитесь со мной по телефону: <a href="tel:+79800037221">+7 (980) 003-72-21</a></p>
+  </section>
+  
+  <footer>
+    © 2025. Глеб Константинович Комаров. Все права защищены.
+  </footer>
+  
+  <script>
+    const targetDate = new Date("2025-02-26T23:59:00");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+      if (diff <= 0) {
+        document.getElementById("timer-section").style.display = "none";
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      document.getElementById("cd-days").textContent = days;
+      document.getElementById("cd-hours").textContent = hours;
+      document.getElementById("cd-mins").textContent = mins;
+      document.getElementById("cd-secs").textContent = secs;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  
+    const fadeEls = document.querySelectorAll(".fade-in");
+    function checkFadeIn() {
+      const triggerBottom = window.innerHeight * 0.85;
+      fadeEls.forEach(el => {
+        const boxTop = el.getBoundingClientRect().top;
+        if (boxTop < triggerBottom) {
+          el.classList.add("visible");
+        }
+      });
+    }
+    window.addEventListener("scroll", checkFadeIn);
+    window.addEventListener("load", checkFadeIn);
+  
+    const faqItems = document.querySelectorAll(".faq-item");
+    faqItems.forEach(item => {
+      const question = item.querySelector("h4");
+      question.addEventListener("click", () => {
+        item.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>
