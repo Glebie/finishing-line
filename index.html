@@ -605,7 +605,7 @@
       }, { once: true });
     }
   
-    // Обработка свайпов для мобильных устройств с учетом вертикального смещения
+    // Обработка свайпов для мобильных устройств с проверкой доминирования горизонтального движения
     let startX = 0, startY = 0;
     slidesContainer.addEventListener('touchstart', function(e) {
       startX = e.touches[0].clientX;
@@ -616,7 +616,7 @@
       const endY = e.changedTouches[0].clientY;
       const diffX = startX - endX;
       const diffY = startY - endY;
-      if (Math.abs(diffX) > 15 && Math.abs(diffY) < 25) { // порог 15px по X, вертикальное смещение менее 25px
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 5) {
         if (diffX > 0) {
           nextSlide();
         } else {
