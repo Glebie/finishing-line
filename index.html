@@ -171,7 +171,7 @@
     /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с навигационными стрелками */
     .reviews-slider {
       position: relative;
-      max-width: 600px; /* уменьшено с 800px до 600px */
+      max-width: 600px; /* уменьшено для компактности */
       margin: 0 auto;
       overflow: hidden;
     }
@@ -396,17 +396,16 @@
     </div>
   </section>
   
-  <section class="fade-in" id="about">
-    <h2>Немного обо мне</h2>
-    <div class="about-container">
-      <img src="https://i.postimg.cc/D0qcJCsp/photo-2024-07-23-19-54-19.jpg" alt="Глеб Константинович Комаров">
-      <div class="about-text">
-        <p>Меня зовут <strong>Глеб Константинович Комаров</strong>. Уже 9 лет я помогаю школьникам подготовиться к ЕГЭ по математике. Каждый год я сдаю экзамен на высокий балл, внимательно отслеживая актуальные изменения.</p>
-        <p>Моя миссия — показать, что математика может быть понятной и увлекательной, а итоговый результат — закономерный итог усердной работы и грамотной подготовки.</p>
-      </div>
+ <section class="fade-in cta" id="cta" style="margin-top: 40px;">
+    <h2>Готовы присоединиться?</h2>
+    <p style="margin-bottom: 20px;">Сделайте решающий шаг и запишитесь на «Финишную прямую» прямо сейчас! Вместе мы добьёмся любых результатов.</p>
+    <div style="margin: 20px 0;">
+      <button class="btn" onclick="window.open('https://t.me/Glebie','_blank')">Telegram</button>
+      <button class="btn" onclick="window.open('https://wa.me/79800037221','_blank')">WhatsApp</button>
     </div>
+    <p>Или свяжитесь со мной по телефону: <a href="tel:+79800037221">+7 (980) 003-72-21</a></p>
   </section>
-  
+
   <section class="fade-in" id="faq">
     <h2>Частые вопросы</h2>
     <div class="faq-item">
@@ -435,7 +434,7 @@
     </div>
   </section>
   
-  <!-- Reviews Section with навигационными стрелками и бесконечным циклом -->
+  <!-- Reviews Section with стрелками и бесконечной каруселью -->
   <section class="fade-in" id="reviews">
     <h2>Отзывы клиентов</h2>
     <div class="reviews-slider">
@@ -471,14 +470,14 @@
     </div>
   </section>
   
-<section class="fade-in cta" id="cta" style="margin-top: 40px;">
+  <section class="fade-in" id="cta" style="margin-top: 40px;">
     <h2>Готовы присоединиться?</h2>
     <p style="margin-bottom: 20px;">Сделайте решающий шаг и запишитесь на «Финишную прямую» прямо сейчас! Вместе мы добьёмся любых результатов.</p>
     <div style="margin: 20px 0;">
-      <button class="btn" onclick="window.open('https://t.me/Glebie','_blank')">Telegram</button>
-      <button class="btn" onclick="window.open('https://wa.me/79800037221','_blank')">WhatsApp</button>
+      <button class="btn" onclick="window.open('https://t.me/YourTelegramUsername','_blank')">Telegram</button>
+      <button class="btn" onclick="window.open('https://wa.me/YourWhatsAppNumber','_blank')">WhatsApp</button>
     </div>
-    <p>Или свяжитесь со мной по телефону: <a href="tel:+79800037221">+7 (980) 003-72-21</a></p>
+    <p>Или свяжитесь со мной по телефону: <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
   </section>
   
   <footer>
@@ -530,7 +529,7 @@
       });
     });
   
-    // Reviews slider – бесконечный слайдер с плавными переходами
+    // Reviews slider – бесконечный слайдер
     const slidesContainer = document.querySelector('.review-slides-container');
     let slides = document.querySelectorAll('.review-slide');
     const totalSlides = slides.length; // 8 отзывов
@@ -554,7 +553,7 @@
       currentSlide++;
       updateSlider();
       slidesContainer.addEventListener('transitionend', function() {
-        if (currentSlide === newTotal - 1) { // достигли клона первого
+        if (currentSlide === newTotal - 1) { // если это клон первого
           slidesContainer.style.transition = 'none';
           currentSlide = 1;
           updateSlider();
@@ -568,7 +567,7 @@
       currentSlide--;
       updateSlider();
       slidesContainer.addEventListener('transitionend', function() {
-        if (currentSlide === 0) { // достигли клона последнего
+        if (currentSlide === 0) { // если это клон последнего
           slidesContainer.style.transition = 'none';
           currentSlide = newTotal - 2;
           updateSlider();
@@ -577,6 +576,21 @@
         }
       }, { once: true });
     }
+  
+    // Добавляем обработку тач-событий для мобильных устройств
+    let startX = 0;
+    slidesContainer.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+    });
+    slidesContainer.addEventListener('touchend', function(e) {
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) { // свайп влево
+        nextSlide();
+      } else if (endX - startX > 50) { // свайп вправо
+        prevSlide();
+      }
+    });
   </script>
 </body>
 </html>
+
