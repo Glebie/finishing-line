@@ -451,7 +451,7 @@
     </div>
   </section>
   
-  <!-- Reviews Section with стрелками, бесконечной каруселью и индикаторами -->
+  <!-- Reviews Section with стрелками, бесконечным циклом и индикаторами -->
   <section class="fade-in" id="reviews">
     <h2>Отзывы клиентов</h2>
     <div class="reviews-slider">
@@ -556,7 +556,7 @@
       });
     });
   
-    // Reviews slider – бесконечный слайдер с плавными переходами и точками
+    // Reviews slider – бесконечный слайдер с точками и обработкой свайпов
     const slidesContainer = document.querySelector('.review-slides-container');
     let slides = document.querySelectorAll('.review-slide');
     const totalSlides = slides.length; // 8 отзывов
@@ -605,28 +605,32 @@
       }, { once: true });
     }
   
-    // Обработка свайпов для мобильных устройств
-    let startX = 0;
+    // Обработка свайпов для мобильных устройств с учетом вертикального смещения
+    let startX = 0, startY = 0;
     slidesContainer.addEventListener('touchstart', function(e) {
       startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
     });
     slidesContainer.addEventListener('touchend', function(e) {
       const endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) { // свайп влево
-        nextSlide();
-      } else if (endX - startX > 50) { // свайп вправо
-        prevSlide();
+      const endY = e.changedTouches[0].clientY;
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+      if (Math.abs(diffX) > 30 && Math.abs(diffY) < 30) { // горизонтальный свайп
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
       }
     });
   
     // Индикаторы (точки)
     const dotsContainer = document.getElementById('review-dots');
     function updateDots() {
-      // Реальный индекс (1..totalSlides)
       let activeIndex = currentSlide;
       if (currentSlide === 0) activeIndex = newTotal - 2;
       if (currentSlide === newTotal - 1) activeIndex = 1;
-      // Обновляем классы точек
       const dots = dotsContainer.querySelectorAll('.dot');
       dots.forEach((dot, index) => {
         if (index + 1 === activeIndex) {
@@ -644,3 +648,4 @@
   </script>
 </body>
 </html>
+
