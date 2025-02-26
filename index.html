@@ -20,7 +20,7 @@
     a:hover { color: var(--accent-color); }
     h1, h2, h3, h4 { margin-bottom: 0.5em; font-weight: 600; }
     :root {
-      --accent-color: #2E8B57; /* Тёмный изумрудно-зелёный */
+      --accent-color: #2E8B57;
       --heading-color: #333;
     }
     /* Header */
@@ -168,7 +168,7 @@
       max-width: 600px;
       margin-left: 80px;
     }
-    /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с навигационными стрелками и индикаторами */
+    /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с стрелками и индикаторами */
     .reviews-slider {
       position: relative;
       max-width: 600px;
@@ -616,7 +616,7 @@
       const endY = e.changedTouches[0].clientY;
       const diffX = startX - endX;
       const diffY = startY - endY;
-      if (Math.abs(diffX) > 30 && Math.abs(diffY) < 30) { // горизонтальный свайп
+      if (Math.abs(diffX) > 15 && Math.abs(diffY) < 25) { // порог 15px по X, вертикальное смещение менее 25px
         if (diffX > 0) {
           nextSlide();
         } else {
@@ -648,4 +648,3 @@
   </script>
 </body>
 </html>
-
