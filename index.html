@@ -168,10 +168,10 @@
       max-width: 600px;
       margin-left: 80px;
     }
-    /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с навигационными стрелками */
+    /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с навигационными стрелками и индикаторами */
     .reviews-slider {
       position: relative;
-      max-width: 600px; /* уменьшено для компактности */
+      max-width: 600px;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -203,6 +203,22 @@
     @media (min-width: 768px) { .review-arrow { display: block; } }
     .review-arrow.left { left: 10px; }
     .review-arrow.right { right: 10px; }
+    .review-dots {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .review-dots .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    .review-dots .dot.active {
+      background-color: var(--accent-color);
+    }
     /* FAQ */
     .faq-item {
       border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px;
@@ -298,7 +314,7 @@
   
   <section class="fade-in" id="free-webinar">
     <h2>Бесплатный открытый вебинар</h2>
-    <p style="max-width: 800px; margin: 0 auto 20px auto; text-align:center;">
+    <p style="max-width: 800px; margin: 0 auto 20px; text-align:center;">
       Перед стартом курса я проведу бесплатный открытый вебинар, где расскажу о самых частых ошибках на экзамене и покажу, как эффективно выстроить подготовку за оставшиеся три месяца.
     </p>
     <p style="text-align:center;">
@@ -396,16 +412,17 @@
     </div>
   </section>
   
- <section class="fade-in cta" id="cta" style="margin-top: 40px;">
-    <h2>Готовы присоединиться?</h2>
-    <p style="margin-bottom: 20px;">Сделайте решающий шаг и запишитесь на «Финишную прямую» прямо сейчас! Вместе мы добьёмся любых результатов.</p>
-    <div style="margin: 20px 0;">
-      <button class="btn" onclick="window.open('https://t.me/Glebie','_blank')">Telegram</button>
-      <button class="btn" onclick="window.open('https://wa.me/79800037221','_blank')">WhatsApp</button>
+  <section class="fade-in" id="about">
+    <h2>Немного обо мне</h2>
+    <div class="about-container">
+      <img src="https://i.postimg.cc/D0qcJCsp/photo-2024-07-23-19-54-19.jpg" alt="Глеб Константинович Комаров">
+      <div class="about-text">
+        <p>Меня зовут <strong>Глеб Константинович Комаров</strong>. Уже 9 лет я помогаю школьникам подготовиться к ЕГЭ по математике. Каждый год я сдаю экзамен на высокий балл, внимательно отслеживая актуальные изменения.</p>
+        <p>Моя миссия — показать, что математика может быть понятной и увлекательной, а итоговый результат — закономерный итог усердной работы и грамотной подготовки.</p>
+      </div>
     </div>
-    <p>Или свяжитесь со мной по телефону: <a href="tel:+79800037221">+7 (980) 003-72-21</a></p>
   </section>
-
+  
   <section class="fade-in" id="faq">
     <h2>Частые вопросы</h2>
     <div class="faq-item">
@@ -434,13 +451,13 @@
     </div>
   </section>
   
-  <!-- Reviews Section with стрелками и бесконечной каруселью -->
+  <!-- Reviews Section with стрелками, бесконечной каруселью и индикаторами -->
   <section class="fade-in" id="reviews">
     <h2>Отзывы клиентов</h2>
     <div class="reviews-slider">
       <button class="review-arrow left" onclick="prevSlide()">&#10094;</button>
       <div class="review-slides-container">
-        <!-- Отзывы -->
+        <!-- Отзывы (реальные слайды) -->
         <div class="review-slide">
           <img src="https://i.postimg.cc/BnnyVcDJ/photo-1-2025-02-26-15-06-24.jpg" alt="Отзыв 1">
         </div>
@@ -467,6 +484,16 @@
         </div>
       </div>
       <button class="review-arrow right" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <div class="review-dots" id="review-dots">
+      <span class="dot active" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+      <span class="dot" onclick="goToSlide(3)"></span>
+      <span class="dot" onclick="goToSlide(4)"></span>
+      <span class="dot" onclick="goToSlide(5)"></span>
+      <span class="dot" onclick="goToSlide(6)"></span>
+      <span class="dot" onclick="goToSlide(7)"></span>
+      <span class="dot" onclick="goToSlide(8)"></span>
     </div>
   </section>
   
@@ -529,7 +556,7 @@
       });
     });
   
-    // Reviews slider – бесконечный слайдер
+    // Reviews slider – бесконечный слайдер с плавными переходами и точками
     const slidesContainer = document.querySelector('.review-slides-container');
     let slides = document.querySelectorAll('.review-slide');
     const totalSlides = slides.length; // 8 отзывов
@@ -540,13 +567,14 @@
     const firstSlideClone = slides[0].cloneNode(true);
     slidesContainer.appendChild(firstSlideClone);
     slides = document.querySelectorAll('.review-slide');
-    const newTotal = slides.length; // теперь 10 слайдов
+    const newTotal = slides.length; // теперь 10 слайдов (8 реальных + 2 клона)
     let currentSlide = 1;
     slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
     slidesContainer.style.transition = 'transform 0.5s ease';
   
     function updateSlider() {
       slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+      updateDots();
     }
   
     function nextSlide() {
@@ -577,7 +605,7 @@
       }, { once: true });
     }
   
-    // Добавляем обработку тач-событий для мобильных устройств
+    // Обработка свайпов для мобильных устройств
     let startX = 0;
     slidesContainer.addEventListener('touchstart', function(e) {
       startX = e.touches[0].clientX;
@@ -590,7 +618,29 @@
         prevSlide();
       }
     });
+  
+    // Индикаторы (точки)
+    const dotsContainer = document.getElementById('review-dots');
+    function updateDots() {
+      // Реальный индекс (1..totalSlides)
+      let activeIndex = currentSlide;
+      if (currentSlide === 0) activeIndex = newTotal - 2;
+      if (currentSlide === newTotal - 1) activeIndex = 1;
+      // Обновляем классы точек
+      const dots = dotsContainer.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index + 1 === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+  
+    function goToSlide(n) {
+      currentSlide = n;
+      updateSlider();
+    }
   </script>
 </body>
 </html>
-
