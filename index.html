@@ -38,14 +38,17 @@
     nav ul { list-style: none; display: flex; gap: 30px; }
     nav li a { font-weight: 500; color: #1f1f1f; }
     .header-spacer { height: 60px; }
-    /* Кнопки */
+    /* Кнопки с эффектом scale */
     .btn {
       display: inline-block; padding: 14px 24px; border-radius: 6px;
       color: #fff; background-color: var(--accent-color);
       font-weight: 600; border: none; cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
-    .btn:hover { background-color: #225040; }
+    .btn:hover { 
+      background-color: #225040;
+      transform: scale(1.05);
+    }
     /* Hero-секция */
     .hero {
       position: relative; min-height: 80vh;
@@ -67,7 +70,9 @@
       max-width: 1200px; margin: 40px auto;
       background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       border-radius: 8px; padding: 50px 30px;
+      transition: all 0.3s ease;
     }
+    section:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     section h2 {
       text-align: center; margin-bottom: 40px;
       font-size: 2rem; color: var(--heading-color);
@@ -161,8 +166,43 @@
     }
     .about-text {
       max-width: 600px;
-      margin-left: 80px; /* смещаем текст вправо */
+      margin-left: 80px;
     }
+    /* Reviews (Блок с отзывами) - бесконечный горизонтальный слайдер с навигационными стрелками */
+    .reviews-slider {
+      position: relative;
+      max-width: 600px; /* уменьшено с 800px до 600px */
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .review-slides-container {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .review-slide {
+      flex: 0 0 100%;
+    }
+    .review-slide img {
+      width: 100%;
+      display: block;
+    }
+    .review-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+    }
+    @media (min-width: 768px) { .review-arrow { display: block; } }
+    .review-arrow.left { left: 10px; }
+    .review-arrow.right { right: 10px; }
     /* FAQ */
     .faq-item {
       border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px;
@@ -201,7 +241,9 @@
       .hero p { font-size: 1rem; }
       nav ul { gap: 10px; }
       section { margin: 20px auto; padding: 40px 20px; }
-      .about-container { flex-direction: column; align-items: center; gap: 20px; }
+      .about-container {
+        flex-direction: column; align-items: center; gap: 20px;
+      }
       .about-text { margin-left: 0; }
     }
   </style>
@@ -333,19 +375,22 @@
       <div class="price-card">
         <h3>До 26 февраля</h3>
         <p class="price">20 000 руб.</p>
-        <p>Специальная скидка для первых участников. Оплата в 3 платежа или сразу со скидкой 10%.</p>
+        <p>Скидка для первых участников.</p>
       </div>
       <div class="price-card">
         <h3>До 2 марта</h3>
         <p class="price">23 000 руб.</p>
-        <p>Успейте до 2 марта – получите доступ к закрытому вебинару о лайфхаках и ошибках на ЕГЭ.</p>
+        <p>Цена действительна при регистрации до 2 марта.</p>
       </div>
       <div class="price-card">
         <h3>После 2 марта</h3>
         <p class="price">26 000 руб.</p>
-        <p>Базовая стоимость. Оплата в три платежа. Приведите друга и получите скидку 1 000 руб.</p>
+        <p>Регистрация по базовой цене.</p>
       </div>
     </div>
+    <p style="text-align:center; font-size:1rem; margin-top:20px;">
+      Оплата возможна как единовременно (со скидкой 10%), так и в рассрочку из 3 платежей. Дополнительная скидка 1 000 руб. за рекомендацию курса другу действует для всех тарифов.
+    </p>
     <div style="text-align: center; margin-top: 30px;">
       <button class="btn cta-btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Записаться на курс</button>
     </div>
@@ -377,9 +422,9 @@
       </div>
     </div>
     <div class="faq-item">
-      <h4>Возможно ли оформить оплату частями?</h4>
+      <h4>Какие способы оплаты доступны?</h4>
       <div class="faq-answer">
-        <p>Да, вы можете оформить оплату в рассрочку, разделив сумму курса на равные платежи, что делает подготовку более доступной.</p>
+        <p>Вы можете оплатить курс единовременно (со скидкой 10%) или в рассрочку из 3 платежей – оба варианта доступны независимо от даты регистрации.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -387,6 +432,42 @@
       <div class="faq-answer">
         <p>Я помогу выстроить гибкий график занятий и выделить приоритетные темы, чтобы даже при плотном расписании вы смогли подготовиться эффективно.</p>
       </div>
+    </div>
+  </section>
+  
+  <!-- Reviews Section with навигационными стрелками и бесконечным циклом -->
+  <section class="fade-in" id="reviews">
+    <h2>Отзывы клиентов</h2>
+    <div class="reviews-slider">
+      <button class="review-arrow left" onclick="prevSlide()">&#10094;</button>
+      <div class="review-slides-container">
+        <!-- Отзывы -->
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/BnnyVcDJ/photo-1-2025-02-26-15-06-24.jpg" alt="Отзыв 1">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/HLfhnqNL/photo-2-2025-02-26-15-06-24.jpg" alt="Отзыв 2">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/RhmpQc45/photo-3-2025-02-26-15-06-24.jpg" alt="Отзыв 3">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/52KGdYqL/photo-4-2025-02-26-15-06-24.jpg" alt="Отзыв 4">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/tg1cXq2f/photo-5-2025-02-26-15-06-24.jpg" alt="Отзыв 5">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/DZLYXCVP/photo-6-2025-02-26-15-06-24.jpg" alt="Отзыв 6">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/yxTQfk8J/photo-7-2025-02-26-15-06-24.jpg" alt="Отзыв 7">
+        </div>
+        <div class="review-slide">
+          <img src="https://i.postimg.cc/pVQ6V1J2/photo-8-2025-02-26-15-06-24.jpg" alt="Отзыв 8">
+        </div>
+      </div>
+      <button class="review-arrow right" onclick="nextSlide()">&#10095;</button>
     </div>
   </section>
   
@@ -405,6 +486,7 @@
   </footer>
   
   <script>
+    // Таймер
     const targetDate = new Date("2025-02-26T23:59:00");
     function updateCountdown() {
       const now = new Date();
@@ -425,6 +507,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
   
+    // Fade-in анимация
     const fadeEls = document.querySelectorAll(".fade-in");
     function checkFadeIn() {
       const triggerBottom = window.innerHeight * 0.85;
@@ -438,6 +521,7 @@
     window.addEventListener("scroll", checkFadeIn);
     window.addEventListener("load", checkFadeIn);
   
+    // FAQ раскрытие
     const faqItems = document.querySelectorAll(".faq-item");
     faqItems.forEach(item => {
       const question = item.querySelector("h4");
@@ -445,7 +529,54 @@
         item.classList.toggle("active");
       });
     });
+  
+    // Reviews slider – бесконечный слайдер с плавными переходами
+    const slidesContainer = document.querySelector('.review-slides-container');
+    let slides = document.querySelectorAll('.review-slide');
+    const totalSlides = slides.length; // 8 отзывов
+    // Клонируем последний слайд и вставляем его в начало
+    const lastSlideClone = slides[totalSlides - 1].cloneNode(true);
+    slidesContainer.insertBefore(lastSlideClone, slidesContainer.firstChild);
+    // Клонируем первый слайд и вставляем его в конец
+    const firstSlideClone = slides[0].cloneNode(true);
+    slidesContainer.appendChild(firstSlideClone);
+    slides = document.querySelectorAll('.review-slide');
+    const newTotal = slides.length; // теперь 10 слайдов
+    let currentSlide = 1;
+    slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    slidesContainer.style.transition = 'transform 0.5s ease';
+  
+    function updateSlider() {
+      slidesContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    }
+  
+    function nextSlide() {
+      currentSlide++;
+      updateSlider();
+      slidesContainer.addEventListener('transitionend', function() {
+        if (currentSlide === newTotal - 1) { // достигли клона первого
+          slidesContainer.style.transition = 'none';
+          currentSlide = 1;
+          updateSlider();
+          void slidesContainer.offsetWidth;
+          slidesContainer.style.transition = 'transform 0.5s ease';
+        }
+      }, { once: true });
+    }
+  
+    function prevSlide() {
+      currentSlide--;
+      updateSlider();
+      slidesContainer.addEventListener('transitionend', function() {
+        if (currentSlide === 0) { // достигли клона последнего
+          slidesContainer.style.transition = 'none';
+          currentSlide = newTotal - 2;
+          updateSlider();
+          void slidesContainer.offsetWidth;
+          slidesContainer.style.transition = 'transform 0.5s ease';
+        }
+      }, { once: true });
+    }
   </script>
 </body>
 </html>
-
